@@ -1,0 +1,36 @@
+{
+  "client": [
+    {
+      "id": "1",
+      "nomClient": "alex",
+      "prenomClient": "grayson",
+      "villeDeClient": "california",
+      "email": "user1",
+      "motDePass": "1"
+    },
+    {
+      "id": "2",
+      "nomClient": "yuran",
+      "prenomClient": "atlatika",
+      "villeDeClient": "byalona",
+      "email": "user2",
+      "motDePass": "2"
+    },
+    {
+      "id": "3",
+      "nomClient": "alvis",
+      "prenomClient": "recardo",
+      "villeDeClient": "mezayap",
+      "email": "user3",
+      "motDePass": "3"
+    },
+    {
+      "id": 4,
+      "nomClient": "Spacey",
+      "prenomClient": "Kevin",
+      "villeDeClient": "lj",
+      "email": "kefedeb358@azduan.com",
+      "motDePass": "123"
+    }
+  ]
+}

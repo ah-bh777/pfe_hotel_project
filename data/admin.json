@@ -1,0 +1,11 @@
+{
+    "admin" :
+    [
+        {
+        "idAdmin" : 1 ,
+        "email" : "admin",
+        "motDePass" : "123"
+        }
+    
+    ]
+    }
