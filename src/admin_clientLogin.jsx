@@ -71,7 +71,7 @@ export default function ClientLogin() {
         alert("invalde input for admin")
       }
     }
-    
+
   }
 
 
@@ -83,7 +83,7 @@ export default function ClientLogin() {
         
         <div className="d-flex flex-column align-items-center"></div>
         <Form.Group className="mb-4">
-          <Form.Label>Adresse Email {clientApi.length} {adminApi.length}</Form.Label>
+          <Form.Label>Adresse Email </Form.Label>
           <Form.Control type="email" id="email" value={email} onChange={(e)=>{setEmail(e.target.value)}}  aria-describedby="emailHelp" />
         </Form.Group>
 
@@ -165,7 +165,7 @@ const Modalpopup = ({ open, onClose }) => {
     <div style={{ textAlign: 'center' }}>
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
         <DialogTitle>
-        Enregistrement du client {api.length}
+        Enregistrement du client 
           <IconButton onClick={onClose} style={{ float: 'right' }}>
             <CloseIcon color="primary" />
           </IconButton>
