@@ -40,13 +40,12 @@ export default function ClientLogin() {
   };
 
   // fetching data client and admin
-
+/*
   useEffect(()=>{
     Axios.get("http://localhost:8000/client").then(res => setClientApi(res.data))
     Axios.get("http://localhost:7000/admin").then(res => setadminApi(res.data))
   },[])
-
-
+*/
 
   const clearance = ()=>{
     if(selected.role === "CLEINT"){
@@ -123,12 +122,13 @@ const Modalpopup = ({ open, onClose }) => {
   const [motDePasse, setMotDePasse] = useState('');
   const [api,setApi] = useState([])
 
-
+/*
   useEffect(() => {
     Axios.get("http://localhost:8000/client").then((res) => {
       setApi(res.data);
     })
   }, []);
+*/
 
   const handleSubmit = (e) => {
     e.preventDefault();

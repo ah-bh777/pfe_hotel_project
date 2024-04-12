@@ -4,7 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import ManageAccountsTwoToneIcon from '@mui/icons-material/ManageAccountsTwoTone';
-import {CLIENT_ROLE , ADMIN_ROLE} from "./store/action"
+import {CLIENT_ROLE , ADMIN_ROLE} from "../store/action"
 import {useDispatch } from "react-redux"
 
 export default function CenteredTabs() {
