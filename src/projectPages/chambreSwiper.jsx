@@ -2,74 +2,83 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import Card from 'react-bootstrap/Card';
 
-// Import your images statically
+// Importez vos images statiquement
 import img1 from '../pics/chambrePics/img1.jpg';
 import img2 from '../pics/chambrePics/img2.jpg';
 import img3 from '../pics/chambrePics/img3.jpg';
 import img4 from '../pics/chambrePics/img4.jpg';
 import img5 from '../pics/chambrePics/img5.jpg';
+import img6 from '../pics/chambrePics/img6.jpg';
 
 export default function ChambreInfos() {
-    const data = {
-        "chambre": [
-          {
-            "idChambre": 1,
-            "typeDeChambre": "Single",
-            "additionalies": "tv",
-            "description": "This single room is equipped with a TV, providing entertainment during your stay. It's perfect for solo travelers looking for comfort and convenience what are you waiting for .",
-            "coutParNuit": 20,
-            "img": img1
-          },
-          {
-            "idChambre": 2,
-            "typeDeChambre": "Double",
-            "additionalies": "climatiseur",
-            "description": "Our double room features a climate control system, ensuring a pleasant environment throughout your stay. It's ideal for couples or small families seeking relaxation and comfort.",
-            "coutParNuit": 40,
-            "img": img2
-          },
-          {
-            "idChambre": 3,
-            "typeDeChambre": "King",
-            "additionalies": "balcon",
-            "description": "Enjoy the luxury of our king room with a private balcony, offering stunning views and a serene atmosphere. It's perfect for those seeking a premium experience.",
-            "coutParNuit": 50,
-            "img": img3
-          },
-          {
-            "idChambre": 4,
-            "typeDeChambre": "Queen",
-            "additionalies": "baignoire",
-            "description": "Relax in our queen room with a spacious bathtub, providing ultimate comfort and rejuvenation. It's ideal for guests looking to unwind after a long day of exploring.",
-            "coutParNuit": 60,
-            "img": img4
-          },
-          {
-            "idChambre": 5,
-            "typeDeChambre": "Suite",
-            "additionalies": "balcon",
-            "description": "Indulge in the luxury of our suite, complete with a private balcony for breathtaking views and relaxation. It's perfect for those seeking a lavish experience during their stay.",
-            "coutParNuit": 80,
-            "img": img5
-          }
-        ]
-      };
+
+  const data = {
+    "chambre": [
+      {
+        "idChambre": 1,
+        "typeDeChambre": "Simple",
+        "additionalies": "TV",
+        "description": "Cette chambre simple est équipée d'une télévision, offrant divertissement pendant votre séjour. Parfait pour les voyageurs en solo cherchant confort et commodité.",
+        "coutParNuit": 20,
+        "img": img1
+      },
+      {
+        "idChambre": 2,
+        "typeDeChambre": "Double",
+        "additionalies": "Climatiseur",
+        "description": "Notre chambre double dispose d'un système de contrôle climatique, assurant un environnement agréable tout au long de votre séjour. Idéal pour les couples ou les petites familles cherchant détente et confort.",
+        "coutParNuit": 40,
+        "img": img2
+      },
+      {
+        "idChambre": 3,
+        "typeDeChambre": "Roi",
+        "additionalies": "Balcon",
+        "description": "Profitez du luxe de notre chambre king avec un balcon privé, offrant des vues imprenables et une atmosphère sereine. Parfait pour ceux qui recherchent une expérience premium.",
+        "coutParNuit": 50,
+        "img": img3
+      },
+      {
+        "idChambre": 4,
+        "typeDeChambre": "Reine",
+        "additionalies": "Baignoire",
+        "description": "Détendez-vous dans notre chambre queen avec une baignoire spacieuse, offrant un confort ultime et un rajeunissement. Idéal pour les clients souhaitant se détendre après une longue journée d'exploration.",
+        "coutParNuit": 60,
+        "img": img4
+      },
+      {
+        "idChambre": 5,
+        "typeDeChambre": "Suite",
+        "additionalies": "Balcon",
+        "description": "Indulgez dans le luxe de notre suite, avec un balcon privé pour des vues à couper le souffle et la détente. Parfait pour ceux qui recherchent une expérience somptueuse pendant leur séjour.",
+        "coutParNuit": 80,
+        "img": img5
+      },
+      {
+        "idChambre": 6,
+        "typeDeChambre": "Jumeau",
+        "additionalies": "Boissons gratuites",
+        "description": "Cette chambre jumelle spacieuse offre une retraite confortable pour les voyageurs en solo ou les compagnons cherchant un hébergement confortable et élégant. Équipé de boissons gratuites.",
+        "coutParNuit": 35,
+        "img": img6
+      }
+    ]
+  };
+  
 
   return (
     <Swiper
-      spaceBetween={300}
+      spaceBetween={250}
       slidesPerView={3}
       loop={true}
     >
       {data.chambre.map(chambre => (
         <SwiperSlide key={chambre.idChambre}>
-          <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src={chambre.img} style={{ height: '200px', objectFit: 'cover' }} />
-            <Card.Body>
-              <Card.Title><strong>{`Type: ${chambre.typeDeChambre}`}</strong></Card.Title>
-              <Card.Text><strong>Additionalies:</strong> {`${chambre.additionalies}`}</Card.Text>
-              <Card.Text><strong>Description:</strong> {`${chambre.description}`}</Card.Text>
-              <Card.Text><strong>Cost Per Night:</strong> ${`${chambre.coutParNuit}`}</Card.Text>
+          <Card style={{ width: '22rem' }}>
+            <Card.Img variant="top" src={chambre.img} style={{ height: '300px', objectFit: 'cover' }} />
+            <Card.Body style={{textAlign : "center"}}>
+              <Card.Title><strong>{` ${chambre.typeDeChambre}`}</strong></Card.Title>
+
             </Card.Body>
           </Card>
         </SwiperSlide>

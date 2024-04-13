@@ -1,10 +1,12 @@
 import React from 'react';
 import LoginPage from './login/loginPage';
-import ChambreInfos from './projectPages/navBar';
+import FrontPage from './projectPages/navBar';
+import ResConfirmation  from "./projectPages/confirmationPage"
+
 
 export default function App() {
   return (<>
-<ChambreInfos/>
+<ResConfirmation/>
   </>
   );
 }

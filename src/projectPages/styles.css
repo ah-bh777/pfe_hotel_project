@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    text-align: center;
+  }
+  
+  .box {
+    flex: 1;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s; /* Add box-shadow transition */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add initial box shadow */
+  }
+  
+  .box:hover {
+    background-color: rgb(1, 1, 43);
+    color: goldenrod;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase box shadow on hover */
+  }
+  
