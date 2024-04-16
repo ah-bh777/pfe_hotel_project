@@ -58,7 +58,7 @@ export default function ResConfirmation() {
   const chambre2 = data.chambre.find(chambre => chambre.idChambre === 2); // Second chambre
 
   return (
-    <div style={{ width: '100vw', backgroundColor: 'grey', padding: '30px', textAlign: 'center' }}>
+    <div style={{ height: '100vh', backgroundColor: 'grey', padding: '30px', textAlign: 'center' }}>
       {/* First white div */}
       <div style={{ width: '100%', backgroundColor: 'white', display: 'flex', alignItems: 'center', padding: '20px', borderRadius: '10px' }}>
         <img src={picture} alt="Your Image" style={{ maxWidth: '30%', maxHeight: '100%', objectFit: 'cover', marginRight: '20px' }} />

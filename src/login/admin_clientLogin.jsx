@@ -81,15 +81,15 @@ export default function ClientLogin() {
       <Form>
         
         <div className="d-flex flex-column align-items-center"></div>
-        <Form.Group className="mb-4">
-          <Form.Label>Adresse Email </Form.Label>
-          <Form.Control type="email" id="email" value={email} onChange={(e)=>{setEmail(e.target.value)}}  aria-describedby="emailHelp" />
-        </Form.Group>
+        <Form.Group className="mb-4 text-start">
+  <Form.Label>Adresse Email</Form.Label>
+  <Form.Control type="email" id="email" value={email} onChange={(e)=>{setEmail(e.target.value)}}  aria-describedby="emailHelp" />
+</Form.Group>
 
-        <Form.Group className="mb-4">
-          <Form.Label>Mot de passe</Form.Label>
-          <Form.Control type="password" id="password" value={password} onChange={(e)=>{setPassword(e.target.value)}} />
-        </Form.Group>
+<Form.Group className="mb-4 text-start">
+  <Form.Label>Mot de passe</Form.Label>
+  <Form.Control type="password" id="password" value={password} onChange={(e)=>{setPassword(e.target.value)}} />
+</Form.Group>
 
         <div className="d-flex justify-content-between mb-4">
           <Button onClick={clearance} variant="primary" className="mb-4">
@@ -119,6 +119,7 @@ const Modalpopup = ({ open, onClose }) => {
   const [nom, setNom] = useState('');
   const [ville, setVille] = useState('');
   const [email, setEmail] = useState('');
+  const [tele, setTele] = useState('');
   const [motDePasse, setMotDePasse] = useState('');
   const [api,setApi] = useState([])
 
@@ -139,6 +140,7 @@ const Modalpopup = ({ open, onClose }) => {
       "prenomClient"  : prenom ,
       "villeDeClient" : ville ,
       "email" : email ,
+      "telephone" : tele ,
       "motDePass" : motDePasse 
     };
   
@@ -176,6 +178,7 @@ const Modalpopup = ({ open, onClose }) => {
               <TextField variant="outlined" label="Nom" value={nom} onChange={(e) => setNom(e.target.value)} />
               <TextField variant="outlined" label="Ville" value={ville} onChange={(e) => setVille(e.target.value)} />
               <TextField variant="outlined" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <TextField variant="outlined" label="telephone" value={tele} onChange={(e) => setTele(e.target.value)} />
               <TextField  type="password" variant="outlined" label="Mot de passe" value={motDePasse} onChange={(e) => setMotDePasse(e.target.value)} />
             <Button type="submit" onClick={handleSubmit} fullWidth variant="contained" color="secondary" sx={{ mt: 3, mb: 2 }}>
             Submit

@@ -15,9 +15,11 @@ import MenuItem from '@mui/material/MenuItem';
 
 import CarouselPics from './home';
 import Select from './selectionPage';
+import ResConfirmation  from "./confirmationPage"
 
-const pages = ['Home', 'Booking', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Home', 'Reserver', 'Confirmer'];
+const settings = ['Profil', 'Compte', 'Tableau de bord', 'Déconnexion'];
+
 
 export default function FrontPage() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -94,7 +96,7 @@ export default function FrontPage() {
                 <Link to="/select">
                   <Button color="inherit" style={{ color: 'black' }}>{pages[1]}</Button>
                 </Link>
-                <Link to="/">
+                <Link to="/confirm">
                   <Button color="inherit" style={{ color: 'black' }}>{pages[2]}</Button>
                 </Link>
               </Box>
@@ -125,6 +127,7 @@ export default function FrontPage() {
         <Routes>
           <Route path="/" element={<CarouselPics />} />
           <Route path="/select" element={<Select />} />
+          <Route path="/confirm" element={<ResConfirmation />} />
         </Routes>
       </>
     </BrowserRouter>
