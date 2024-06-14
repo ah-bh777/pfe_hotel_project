@@ -8,9 +8,13 @@ import img6 from '../pics/chambrePics/img6.jpg';
 
 const images = [img1, img2, img3, img4, img5, img6];
 
-const Frame = ({ roomId, client, roomName, roomDescription, roomAdditionalities, roomCost }) => {
-  const imageIndex = roomId - 1; // Assuming roomId starts from 1 and is sequential
-  const image = images[imageIndex % images.length]; // Handle cases where roomId exceeds the number of images
+const Frame = ({ frameData, client, roomName, roomDescription, roomAdditionalities, roomCost, onInputChange }) => {
+  const imageIndex = frameData.roomId - 1;
+  const image = images[imageIndex % images.length];
+
+  const handleChange = (field, value) => {
+    onInputChange(frameData.roomId, field, value);
+  };
 
   return (
     <div style={{ width: '100%', backgroundColor: 'white', display: 'flex', alignItems: 'center', padding: '20px', borderRadius: '10px', marginBottom: '20px' }}>
@@ -30,21 +34,21 @@ const Frame = ({ roomId, client, roomName, roomDescription, roomAdditionalities,
         </div>
         <div className="d-flex justify-content-center mt-4">
           <label style={{ marginRight: '30px' }}><strong>wifi</strong></label>
-          <input type="checkbox" className="me-3" />
+          <input type="checkbox" className="me-3" checked={frameData.wifi} onChange={(e) => handleChange('wifi', e.target.checked)} />
           <label style={{ marginRight: '30px' }}><strong>petit déjeuner</strong></label>
-          <input type="checkbox" className="me-3" />
+          <input type="checkbox" className="me-3" checked={frameData.breakfast} onChange={(e) => handleChange('breakfast', e.target.checked)} />
           <label style={{ marginRight: '30px' }}><strong>nettoyage</strong></label>
-          <input type="checkbox" className="me-3" />
+          <input type="checkbox" className="me-3" checked={frameData.cleaning} onChange={(e) => handleChange('cleaning', e.target.checked)} />
           <label style={{ marginRight: '30px' }}><strong>spa</strong></label>
-          <input type="checkbox" className="me-3" />
+          <input type="checkbox" className="me-3" checked={frameData.spa} onChange={(e) => handleChange('spa', e.target.checked)} />
           <label style={{ marginRight: '30px' }}><strong>piscine</strong></label>
-          <input type="checkbox" className="me-3" />
+          <input type="checkbox" className="me-3" checked={frameData.pool} onChange={(e) => handleChange('pool', e.target.checked)} />
         </div>
         <div className="d-flex justify-content-center mt-4">
           <label style={{ marginRight: '10px' }}><strong>checkin</strong></label>
-          <input type="date" className="form-control me-3" />
+          <input type="date" className="form-control me-3" value={frameData.checkin} onChange={(e) => handleChange('checkin', e.target.value)} />
           <label style={{ marginRight: '10px' }}><strong>checkout</strong></label>
-          <input type="date" className="form-control" />
+          <input type="date" className="form-control" value={frameData.checkout} onChange={(e) => handleChange('checkout', e.target.value)} />
         </div>
       </div>
     </div>
