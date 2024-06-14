@@ -84,7 +84,7 @@ export default function SelectRoom() {
 
   const handleRoomSelection = (selectedRoom) => {
     dispatcher(ADD_ROOM(selectedRoom))
-    navigate('/confirm');
+    navigate('/FrontPage/confirm');
   };
 
   const roomImages = {

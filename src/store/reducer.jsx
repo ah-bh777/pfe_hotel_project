@@ -2,7 +2,7 @@ const actualState = {
   etatDeUtilisateur: {
     role: "ADMIN",
     log: false,
-    room: [1,3,5]
+    room: []
   }
 };
 
