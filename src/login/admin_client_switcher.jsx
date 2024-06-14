@@ -9,7 +9,7 @@ import {useDispatch } from "react-redux"
 
 export default function CenteredTabs() {
   const [value, setValue] = React.useState(0);
-  const [role, setRole] = React.useState("admin");
+  const [role, setRole] = React.useState("");
 
   const dispatch = useDispatch()
 

@@ -1,35 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Button } from 'react-bootstrap'; 
-
+import React, { useState, useEffect } from 'react';
+import { Form, Button } from 'react-bootstrap';
 import CenteredTabs from './admin_client_switcher';
-import {  Dialog, DialogActions, DialogContent, DialogTitle,  IconButton, Stack, TextField } from "@mui/material";
-
-import CloseIcon from "@mui/icons-material/Close"
+import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, TextField } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import Axios from 'axios';
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { LOGIN_STATE } from "../store/action";
 
-import {useSelector} from "react-redux"
-
-export default function ClientLogin() {
-
-  // popUP
+export default function ClientLogin({ setLoggedIn }) {
   const [openModal, setOpenModal] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const selectedRole = useSelector(state => state.etatDeUtilisateur.role);
+  const selectedLog = useSelector(state => state.etatDeUtilisateur.log);
+  const navigate = useNavigate();
+  const dispatcher = useDispatch();
 
-  // stocking  data client and admin
-
-  const [clientApi,setClientApi] = useState([])
-  const [adminApi,setadminApi] = useState([])
-
-  // input email / input password 
-
-  const [email,setEmail] = useState()
-  const [password,setPassword] = useState()
-
-
-  // BRINGING the raget for the switcher 
-  const selected = useSelector(data => data.etatDeUtilisateur)
-
-
-  // popUP functionalities
+  useEffect(() => {
+    if (selectedLog) {
+      console.log("User logged in successfully");
+      if (selectedRole === "CLIENT") {
+        navigate("/FrontPage/home");
+      } else {
+        navigate("/admin");
+      }
+    }
+  }, [selectedLog, selectedRole, navigate]);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -39,72 +36,67 @@ export default function ClientLogin() {
     setOpenModal(false);
   };
 
-  // fetching data client and admin
-/*
-  useEffect(()=>{
-    Axios.get("http://localhost:8000/client").then(res => setClientApi(res.data))
-    Axios.get("http://localhost:7000/admin").then(res => setadminApi(res.data))
-  },[])
-*/
+  const clearance = () => {
+    console.log("Selected role:", selectedRole);
 
-  const clearance = ()=>{
-    if(selected.role === "CLEINT"){
+    const loginEndpoint = selectedRole === "CLIENT" ? "http://127.0.0.1:8000/api/loginC" : "http://127.0.0.1:8000/api/login";
+    const welcomeMessage = selectedRole === "CLIENT" ? "Welcome client" : "Welcome admin";
+    const invalidCredentialsMessage = selectedRole === "CLIENT" ? "Invalid client credentials" : "Invalid admin credentials";
 
-        const user = clientApi.find((client)=>{
-          return client.email === email && client.motDePass === password
-        })
-        if(user){
-          alert(`welcome ${user.nomClient}`)
-        }else{
-          alert("invalde input")
+    console.log("Sending login request with payload:", { email, motDePass: password });
+
+    Axios.post(loginEndpoint, { email, motDePass: password })
+      .then(response => {
+        console.log("Response data:", response.data);
+        if (response.data.state) {
+          const token = response.data.token;
+          const client = response.data.client;
+          alert(welcomeMessage);
+          console.log("Token:", token);
+          dispatcher(LOGIN_STATE());
+          localStorage.setItem("theObjToken", JSON.stringify({"token": token, 'client': client}));
+
+          setLoggedIn(true); // Update loggedIn state
+          console.log("Dispatched LOGIN_STATE action");
+        } else {
+          console.log("Login failed with state:", selectedLog);
+          alert(invalidCredentialsMessage);
         }
-
-    }else{
-
-      const user = adminApi.find((admin)=>{
-        return admin.email === email && admin.motDePass === password
       })
-      if(user){
-        alert(`welcome aboard  admin`)
-      }else{
-        alert("invalde input for admin")
-      }
-    }
-
-  }
-
+      .catch(error => {
+        console.error("Error logging in:", error);
+        alert("Error logging in");
+      });
+  };
 
   return (
     <>
       <CenteredTabs />
-    <br />
-      <Form>
-        
-        <div className="d-flex flex-column align-items-center"></div>
+      <br />
+      <Form onSubmit={e => { e.preventDefault(); clearance(); }}>
         <Form.Group className="mb-4 text-start">
-  <Form.Label>Adresse Email</Form.Label>
-  <Form.Control type="email" id="email" value={email} onChange={(e)=>{setEmail(e.target.value)}}  aria-describedby="emailHelp" />
-</Form.Group>
+          <Form.Label>Adresse Email</Form.Label>
+          <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </Form.Group>
 
-<Form.Group className="mb-4 text-start">
-  <Form.Label>Mot de passe</Form.Label>
-  <Form.Control type="password" id="password" value={password} onChange={(e)=>{setPassword(e.target.value)}} />
-</Form.Group>
+        <Form.Group className="mb-4 text-start">
+          <Form.Label>Mot de passe</Form.Label>
+          <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </Form.Group>
 
-        <div className="d-flex justify-content-between mb-4">
-          <Button onClick={clearance} variant="primary" className="mb-4">
+        <div className="d-flex justify-content-between mb4">
+          <Button type="submit" variant="primary" className="mb-4">
             Se connecter
           </Button>
           <Button variant="link" className="text-decoration-none" href="#forgot">
             Mot de passe oublié ?
           </Button>
         </div>
-        {selected.role !== "ADMIN"  ? (
-                  <div className="text-center">
-                  <p>Pas encore membre ? <Button variant="link" className="text-decoration-none" onClick={handleOpenModal}>S'inscrire</Button></p>
-                </div>
-        ) : "" }
-
+        {selectedRole !== "ADMIN" && (
+          <div className="text-center">
+            <p>Pas encore membre ? <Button variant="link" className="text-decoration-none" onClick={handleOpenModal}>S'inscrire</Button></p>
+          </div>
+        )}
       </Form>
 
       <Modalpopup open={openModal} onClose={handleCloseModal} />
@@ -112,76 +104,106 @@ export default function ClientLogin() {
   );
 }
 
-
-
 const Modalpopup = ({ open, onClose }) => {
   const [prenom, setPrenom] = useState('');
   const [nom, setNom] = useState('');
   const [ville, setVille] = useState('');
   const [email, setEmail] = useState('');
-  const [tele, setTele] = useState('');
   const [motDePasse, setMotDePasse] = useState('');
-  const [api,setApi] = useState([])
-
-/*
-  useEffect(() => {
-    Axios.get("http://localhost:8000/client").then((res) => {
-      setApi(res.data);
-    })
-  }, []);
-*/
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    const Obj = { 
-      "id" : api.length + 1 ,
-      "nomClient" : nom ,
-      "prenomClient"  : prenom ,
-      "villeDeClient" : ville ,
-      "email" : email ,
-      "telephone" : tele ,
-      "motDePass" : motDePasse 
+
+    const Obj = {
+      nomClient: nom,
+      prenomClient: prenom,
+      villeDeClient: ville,
+      email: email,
+      motDePass: motDePasse
     };
-  
-    Axios.post("http://localhost:8000/client", Obj)
+
+    Axios.post("http://localhost:8000/api/register", Obj)
       .then((response) => {
-        console.log("Client added successfully:", response.data);
-        
+        if (response.data.state) {
+          console.log("Client added successfully:", response.data.client);
+          setPrenom('');
+          setNom('');
+          setVille('');
+          setEmail('');
+          setMotDePasse('');
+          setErrors({});
+          onClose();
+        } else {
+          setErrors(response.data.message);
+        }
       })
       .catch((error) => {
         console.error("Error adding client:", error);
       });
-  
-    setPrenom('');
-    setNom('');
-    setVille('');
-    setEmail('');
-    setMotDePasse('');
   };
-  
-
-  
 
   return (
     <div style={{ textAlign: 'center' }}>
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
         <DialogTitle>
-        Enregistrement du client 
+          Enregistrement du client
           <IconButton onClick={onClose} style={{ float: 'right' }}>
             <CloseIcon color="primary" />
           </IconButton>
         </DialogTitle>
         <DialogContent>
           <Stack spacing={2} margin={2}>
-          <TextField variant="outlined" label="Prenom" value={prenom} onChange={(e) => setPrenom(e.target.value)} />
-              <TextField variant="outlined" label="Nom" value={nom} onChange={(e) => setNom(e.target.value)} />
-              <TextField variant="outlined" label="Ville" value={ville} onChange={(e) => setVille(e.target.value)} />
-              <TextField variant="outlined" label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-              <TextField variant="outlined" label="telephone" value={tele} onChange={(e) => setTele(e.target.value)} />
-              <TextField  type="password" variant="outlined" label="Mot de passe" value={motDePasse} onChange={(e) => setMotDePasse(e.target.value)} />
-            <Button type="submit" onClick={handleSubmit} fullWidth variant="contained" color="secondary" sx={{ mt: 3, mb: 2 }}>
-            Submit
+            <TextField
+              variant="outlined"
+              label="Prenom"
+              value={prenom}
+              onChange={(e) => setPrenom(e.target.value)}
+              error={!!errors.prenomClient}
+              helperText={errors.prenomClient}
+            />
+            <TextField
+              variant="outlined"
+              label="Nom"
+              value={nom}
+              onChange={(e) => setNom(e.target.value)}
+              error={!!errors.nomClient}
+              helperText={errors.nomClient}
+            />
+            <TextField
+              variant="outlined"
+              label="Ville"
+              value={ville}
+              onChange={(e) => setVille(e.target.value)}
+              error={!!errors.villeDeClient}
+              helperText={errors.villeDeClient}
+            />
+            <TextField
+              variant="outlined"
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              error={!!errors.email}
+              helperText={errors.email}
+            />
+            <TextField
+              type="password"
+              variant="outlined"
+              label="Mot de passe"
+              value={motDePasse}
+              onChange={(e) => setMotDePasse(e.target.value)}
+              error={!!errors.motDePass}
+              helperText={errors.motDePass}
+            />
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              fullWidth
+              variant="contained"
+              color="secondary"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Submit
             </Button>
           </Stack>
         </DialogContent>

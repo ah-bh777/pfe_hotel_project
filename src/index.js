@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App1 from './App1';
 import  reducer from './store/reducer.jsx'
 
 import {legacy_createStore } from "redux"
@@ -13,6 +13,6 @@ const store = legacy_createStore(reducer)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <App />
+    <App1 />
   </Provider>
 );
