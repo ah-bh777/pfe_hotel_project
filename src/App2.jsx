@@ -37,6 +37,7 @@ export default function App1() {
         <Route path='/FrontPage/*' element={<FrontPage logout={handleLogout} />} />
         <Route path='/select' element={<SelectRoom />} />
         <Route path='/confirm' element={<ResConfirmation />} />
+      
         <Route path='/admin' element={<Test logout={handleLogout} />} />
         <Route path="*" element={loggedIn ? <Navigate to="/FrontPage/home" /> : <Navigate to="/login" />} />
       </Routes>

@@ -77,22 +77,23 @@ export default function ResConfirmation() {
     });
 
     const reservationData = {
-      client_id: myValue?.client.id,
+      clients_id: myValue?.client.id,
       rooms: formattedRooms
     };
 
     // Log the reservation data to the console
     console.log('Reservation Data:', reservationData);
 
-    // Comment out the axios post request and navigate call
-    // axios.post('http://127.0.0.1:8000/api/reserve', reservationData)
-    //   .then(response => {
-    //     console.log('Reservation created successfully:', response.data);
-    //     navigate('/confirmation', { state: { reservationData: formattedRooms } });
-    //   })
-    //   .catch(error => {
-    //     console.error('Error creating reservation:', error);
-    //   });
+    // Send the reservation data to the backend
+    axios.post('http://127.0.0.1:8000/api/storeReservation', reservationData)
+    .then(response => {
+      console.log('Reservation created successfully:', response.data);
+      navigate('/confirmation', { state: { reservationData: formattedRooms } });
+    })
+    .catch(error => {
+      console.error('Error creating reservation:', error);
+    });
+  
   };
 
   const handleAddNewFrame = () => {
