@@ -12,6 +12,19 @@ import {
   ArcElement
 } from "chart.js";
 import "./Profile.css";
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 // Register the necessary components for Chart.js
 ChartJS.register(
@@ -41,7 +54,6 @@ const Profil = () => {
     return <div>Loading...</div>;
   }
 
-  // Mapping the service names and counts
   const serviceLabels = Object.keys(data.topServiceNames).map(key => data.topServiceNames[key]);
   const serviceCounts = Object.keys(data.topServiceNames).map(key => {
     return data.reserveDetails.reduce((count, reserve) => {
@@ -49,7 +61,6 @@ const Profil = () => {
     }, 0);
   });
 
-  // Mapping the room names and counts
   const roomLabels = Object.keys(data.topRoomNames).map(key => data.topRoomNames[key]);
   const roomCounts = Object.keys(data.topRoomNames).map(key => {
     return data.reserveDetails.reduce((count, reserve) => {
@@ -99,6 +110,62 @@ const Profil = () => {
     ]
   };
 
+  function Row({ row }) {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <React.Fragment>
+        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+          <TableCell>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell component="th" scope="row">
+            {row.rooms.map(room => room.typeDeChambre).join(", ")}
+          </TableCell>
+          <TableCell>{row.clientName}</TableCell>
+          <TableCell align="right">{row.prix_total}</TableCell>
+          <TableCell align="right">{row.débutReservation}</TableCell>
+          <TableCell align="right">{row.services.length}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box sx={{ margin: 1 }}>
+                <Typography variant="h6" gutterBottom component="div">
+                  Services
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Service Name</TableCell>
+                      <TableCell align="right">Cost</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {row.services.map((service, index) => (
+                      <TableRow key={index}>
+                        <TableCell component="th" scope="row">
+                          {service.nomServ}
+                        </TableCell>
+                        <TableCell align="right">{service.coutDeServ}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      </React.Fragment>
+    );
+  }
+
   return (
     <div>
       <div className="profil-container">
@@ -114,6 +181,29 @@ const Profil = () => {
           <h3>Most Reserved Room</h3>
           <p>{data.mostReservedRoom}</p>
         </div>
+      </div>
+
+      <div className="table-container">
+        <h3>Reservation Details</h3>
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Rooms</TableCell>
+                <TableCell>Client Name</TableCell>
+                <TableCell align="right">Total Cost</TableCell>
+                <TableCell align="right">Date</TableCell>
+                <TableCell align="right">Services Count</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.reserveDetails.map((reserve, index) => (
+                <Row key={index} row={reserve} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
       <div className="chart-container">
         <div className="chart-box">
