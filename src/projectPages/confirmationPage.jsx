@@ -48,8 +48,8 @@ export default function ResConfirmation() {
   }, [rooms, roomIds]);
 
   const handleInputChange = (roomId, field, value) => {
-    setFramesData(prevFramesData => 
-      prevFramesData.map(frame => 
+    setFramesData(prevFramesData =>
+      prevFramesData.map(frame =>
         frame.roomId === roomId ? { ...frame, [field]: value } : frame
       )
     );
@@ -81,35 +81,19 @@ export default function ResConfirmation() {
       rooms: formattedRooms
     };
 
-    // Log the reservation data to the console
-    console.log('Reservation Data:', reservationData);
-
     // Send the reservation data to the backend
     axios.post('http://127.0.0.1:8000/api/storeReservation', reservationData)
-    .then(response => {
-      console.log('Reservation created successfully:', response.data);
-      navigate('/confirmation', { state: { reservationData: formattedRooms } });
-    })
-    .catch(error => {
-      console.error('Error creating reservation:', error);
-    });
-  
+      .then(response => {
+        console.log('Reservation created successfully:', response.data);
+        navigate('/checkout', { state: { rooms: response.data.rooms, total: response.data.total } });
+      })
+      .catch(error => {
+        console.error('Error creating reservation:', error);
+      });
   };
 
-  const handleAddNewFrame = () => {
-    setFramesData(prevFramesData => [
-      ...prevFramesData,
-      {
-        roomId: rooms.length > 0 ? rooms[0].id : null, // Use the first room ID as default
-        wifi: false,
-        breakfast: false,
-        cleaning: false,
-        spa: false,
-        pool: false,
-        checkin: '',
-        checkout: ''
-      }
-    ]);
+  const handleAddRoom = () => {
+    navigate('/select'); // Redirect to the select page
   };
 
   return (
@@ -130,13 +114,22 @@ export default function ResConfirmation() {
         );
       })}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-        <Button variant="contained" size="large" style={{ borderRadius: '20px', backgroundColor: 'white', color: 'black' }} onClick={handleBack}>
-          Back
-        </Button>
+      <Button
+        variant="contained"
+        size="large"
+        style={{ borderRadius: '20px', backgroundColor: 'white', color: 'black', marginTop: '20px' }}
+        onClick={handleAddRoom}
+      >
+        <AddIcon />
+        Add Room
+      </Button>
         <Button variant="contained" size="large" style={{ borderRadius: '20px', backgroundColor: 'white', color: 'black' }} onClick={handleSubmit}>
           Check Out
         </Button>
       </div>
+
+      {/* Button with AddIcon to redirect to select page */}
+   
     </div>
   );
 }

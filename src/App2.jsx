@@ -1,10 +1,16 @@
+// src/App1.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './login/loginPage';
 import FrontPage from './projectPages/navBar';
-import Test from './login/testing';
+import Admin from './login/AdminPage'; // Import the updated Admin component
 import ResConfirmation from './projectPages/confirmationPage';
 import SelectRoom from './projectPages/selectionPage';
+import Checkout from './projectPages/checkOut'; // Import the Checkout component
+
+import Profil from './projectPages/Profile';
+import Compte from './projectPages/Compte';
+
 
 const isAuthenticated = () => {
   return !!localStorage.getItem('token');
@@ -37,8 +43,10 @@ export default function App1() {
         <Route path='/FrontPage/*' element={<FrontPage logout={handleLogout} />} />
         <Route path='/select' element={<SelectRoom />} />
         <Route path='/confirm' element={<ResConfirmation />} />
-      
-        <Route path='/admin' element={<Test logout={handleLogout} />} />
+        <Route path='/checkout' element={<Checkout />} />
+        <Route path='/admin' element={<Admin logout={handleLogout} />} />
+        <Route path='/compte' element={<Compte />} /> {/* Add this line */}
+        <Route path='/profil' element={<Profil />} /> {/* Add this line */}
         <Route path="*" element={loggedIn ? <Navigate to="/FrontPage/home" /> : <Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>

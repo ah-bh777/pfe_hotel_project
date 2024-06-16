@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// src/projectPages/navBar.jsx
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -17,19 +18,31 @@ import CarouselPics from './home';
 import SelectRoom from './selectionPage';
 import ResConfirmation from "./confirmationPage";
 
+import Compte from './Compte';
+import Profil from './Profile';
+
+
 const pages = ['Home', 'Reserver', 'Confirmer'];
-const settings = ['Profil', 'Compte', 'Tableau de bord', 'Déconnexion'];
+const settings = ['Profil', 'Compte', 'Déconnexion'];
 
 export default function FrontPage({ logout }) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
+  const [clientFirstName, setClientFirstName] = useState('');
 
-  const handleOpenNavMenu = event => {
+  useEffect(() => {
+    const theObjToken = JSON.parse(localStorage.getItem('theObjToken'));
+    if (theObjToken && theObjToken.client && theObjToken.client.firstName) {
+      setClientFirstName(theObjToken.client.firstName);
+    }
+  }, []);
+
+  const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleCloseNavMenu = page => {
+  const handleCloseNavMenu = (page) => {
     setAnchorElNav(null);
     if (page === 'Home') {
       navigate('/FrontPage/home');
@@ -40,7 +53,7 @@ export default function FrontPage({ logout }) {
     }
   };
 
-  const handleOpenUserMenu = event => {
+  const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
@@ -54,9 +67,13 @@ export default function FrontPage({ logout }) {
     window.location.reload();
   };
 
-  const handleUserMenuClick = setting => {
+  const handleUserMenuClick = (setting) => {
     if (setting === 'Déconnexion') {
       handleLogout();
+    } else if (setting === 'Profil') {
+      navigate('/FrontPage/profil');
+    } else if (setting === 'Compte') {
+      navigate('/FrontPage/compte');
     } else {
       handleCloseUserMenu();
     }
@@ -84,7 +101,7 @@ export default function FrontPage({ logout }) {
                 open={Boolean(anchorElNav)}
                 onClose={() => setAnchorElNav(null)}
               >
-                {pages.map(page => (
+                {pages.map((page) => (
                   <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
                     <Typography variant="body1">{page}</Typography>
                   </MenuItem>
@@ -118,7 +135,7 @@ export default function FrontPage({ logout }) {
             <Box>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="User Avatar" src="/static/images/avatar.jpg" />
+                  <Avatar>{clientFirstName ? clientFirstName[0] : 'U'}</Avatar>
                 </IconButton>
               </Tooltip>
               <Menu
@@ -127,7 +144,7 @@ export default function FrontPage({ logout }) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map(setting => (
+                {settings.map((setting) => (
                   <MenuItem key={setting} onClick={() => handleUserMenuClick(setting)}>
                     <Typography variant="body1">{setting}</Typography>
                   </MenuItem>
@@ -142,6 +159,8 @@ export default function FrontPage({ logout }) {
         <Route path="/home" element={<CarouselPics />} />
         <Route path="/select" element={<SelectRoom />} />
         <Route path="/confirm" element={<ResConfirmation />} />
+        <Route path="/compte" element={<Compte />} /> {/* Add Compte route */}
+        <Route path="/profil" element={<Profil />} /> {/* Add Profil route */}
       </Routes>
     </>
   );
